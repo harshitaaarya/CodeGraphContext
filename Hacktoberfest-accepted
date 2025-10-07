@@ -1,0 +1,30 @@
+public class StableCountingSort {
+    public static void countingSort(int[] arr) {
+        int n = arr.length;
+        int max = arr[0];
+
+        for (int i = 1; i < n; i++)
+            if (arr[i] > max)
+                max = arr[i];
+
+        int[] count = new int[max + 1];
+        int[] output = new int[n];
+
+        // Frequency count
+        for (int num : arr)
+            count[num]++;
+
+        // Prefix sum to get positions
+        for (int i = 1; i <= max; i++)
+            count[i] += count[i - 1];
+
+        // Build output array (stable)
+        for (int i = n - 1; i >= 0; i--) {
+            output[count[arr[i]] - 1] = arr[i];
+            count[arr[i]]--;
+        }
+
+        // Copy output back
+        System.arraycopy(output, 0, arr, 0, n);
+    }
+}
